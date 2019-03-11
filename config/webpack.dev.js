@@ -1,7 +1,24 @@
 const path = require("path"); //node中path模块
 const htmlWebpackPlugin = require("html-webpack-plugin"); //生成模板文件插件
+const miniCssExtractPlugin = require("mini-css-extract-plugin"); //抽离成css
+const optimizeCss = require("optimize-css-assets-webpack-plugin") //压缩css
+const uglifyJsPlugin = require("uglifyjs-webpack-plugin"); //压缩js
 
 module.exports = {
+    //优化
+    optimization:{
+        minimizer:[
+            //压缩css
+            new optimizeCss(),
+            //压缩js
+            new uglifyJsPlugin({
+                //缓存
+                cache:true,
+                //源码映射
+                sourceMap:true
+            })
+        ]
+    },
     //入口文件
     entry:{
         main:"./src/main.js"
@@ -19,7 +36,7 @@ module.exports = {
     //输出
     output:{
         //生成文件名
-        filename:"[name]-bundle.js",
+        filename:"bundle.[hash:8].js",
         //生成路径
         path:path.resolve(__dirname,"../dist"),
         //生成后的前置路径
@@ -34,15 +51,60 @@ module.exports = {
                 test:/\.css$/,
                 //注意：顺序自下向上调用
                 use:[
-                    {
-                        //抽离成style
-                        loader:"style-loader"
-                    },
+                    // {
+                    //     //抽离成style
+                    //     loader:"style-loader"
+                    // },
+                    miniCssExtractPlugin.loader,
                     {
                         //为css语法应用，例如css中import
                         loader:"css-loader"
+                    },
+                    //自动添加css3前缀
+                    {
+                        loader:"postcss-loader"
+                    },
+                ]
+            },
+            {   
+                //匹配css结尾的文件
+                test:/\.less$/,
+                //注意：顺序自下向上调用
+                use:[
+                    // {
+                    //     //抽离成style
+                    //     loader:"style-loader"
+                    // },
+                    miniCssExtractPlugin.loader,
+                    {
+                        //为css语法应用，例如css中import
+                        loader:"css-loader"
+                    },
+                    {
+                        loader:"less-loader"
+                    },
+                    //自动添加css3前缀
+                    {
+                        loader:"postcss-loader"
                     }
                 ]
+            },
+            {
+                //匹配js结尾的文件
+                test:/\.js$/,
+                use:[
+                    {
+                        //es6转es5等
+                        loader:"babel-loader",
+                        options: {
+                            // 预设规则
+                            presets: [
+                              '@babel/preset-env'
+                            ]
+                        }
+                    }
+                ],
+                exclude:/node_modules/
             },
             // {
             //     //匹配html结尾的文件
@@ -80,22 +142,25 @@ module.exports = {
                     }
                 ]
             }
-            // {
-            //     test:/\.js$/,
-            //     use:[
-            //         {
-            //             loader:"babel-loader"
-            //         }
-            //     ],
-            //     exclude:/node_modules/
-            // }
         ],
     },
     //插件
     plugins:[
         //生成index.html文件
         new htmlWebpackPlugin({
-            template:"./src/index.html"
+            template:"./src/index.html",
+            minify:{
+                //清除引号
+                removeAttributeQuotes:true,
+                // 折叠空行变成一行
+                collapseWhitespace: true,
+                //解决缓存
+                hash:true
+            }
+        }),
+        //抽离css
+        new miniCssExtractPlugin({
+            filename:"static/css/main.css"
         })
     ],
     //启动本地服务webapck-dev-server
@@ -109,6 +174,8 @@ module.exports = {
         //热更新
         hot:true,
         //自动打开浏览器 
-        open:true
+        open:true,
+        //压缩
+        // compress:true
     }
 }

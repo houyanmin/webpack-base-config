@@ -1,1 +1,3 @@
-require("./main.css");
+import("./main.less");
+import("./index.css");
+require("./index.js");
