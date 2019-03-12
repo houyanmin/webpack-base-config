@@ -11,11 +11,12 @@
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",
+    "@babel/plugin-proposal-class-properties": "^7.3.4",
     "@babel/preset-env": "^7.3.4",
     "autoprefixer": "^9.4.10",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.0.5",
-    "babel-preset-env": "^1.7.0",
+    "babel-plugin-dynamic-import-webpack": "^1.1.0",
     "clean-webpack-plugin": "^2.0.0",
     "css-loader": "^2.1.1",
     "extract-loader": "^3.1.0",

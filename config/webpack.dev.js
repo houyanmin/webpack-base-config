@@ -14,6 +14,8 @@ module.exports = {
             new uglifyJsPlugin({
                 //缓存
                 cache:true,
+                //是否并发打包
+                parallel:true,
                 //源码映射
                 sourceMap:true
             })
@@ -91,7 +93,7 @@ module.exports = {
             },
             {
                 //匹配js结尾的文件
-                test:/\.js$/,
+                test:/\.(js|jsx)$/,
                 use:[
                     {
                         //es6转es5等
@@ -100,8 +102,15 @@ module.exports = {
                             // 预设规则
                             presets: [
                               '@babel/preset-env'
+                            ],
+                            // 不采用.babelrc的配置
+                            babelrc: false,
+                            plugins: [
+                                "dynamic-import-webpack",
+                                "@babel/plugin-proposal-class-properties"
                             ]
-                        }
+                        },
+                        
                     }
                 ],
                 exclude:/node_modules/
@@ -170,7 +179,7 @@ module.exports = {
         //指向目录
         contentBase:"dist",
         //覆盖
-        overlay:true,
+        // overlay:true,
         //热更新
         hot:true,
         //自动打开浏览器 
