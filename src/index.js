@@ -1,18 +1,6 @@
-class A {
-    a = 6661;
-}
-var a = () => {
-    alert("123")
-}
+import logo from "./static/Webpack.png";
 
-const promise = new Promise(function(resolve, reject) {
-    // ... some code
-    setTimeout(()=>{
-        resolve(123);
-    },2000)
-});
-promise.then((v)=>{
-    console.log(v);
-});
 
-module.exports = A;
+let img = new Image();
+img.src = require("./static/stock.jpg");
+document.getElementById("root").appendChild(img);

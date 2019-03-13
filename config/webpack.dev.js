@@ -1,8 +1,10 @@
+const webpack = require("webpack");
 const path = require("path"); //node中path模块
 const htmlWebpackPlugin = require("html-webpack-plugin"); //生成模板文件插件
 const miniCssExtractPlugin = require("mini-css-extract-plugin"); //抽离成css
 const optimizeCss = require("optimize-css-assets-webpack-plugin") //压缩css
 const uglifyJsPlugin = require("uglifyjs-webpack-plugin"); //压缩js
+const cleanWebpackPlugin = require("clean-webpack-plugin"); //用于删除/清除构建文件夹（Node v6+,Webpack v2+)
 
 module.exports = {
     //优化
@@ -115,39 +117,61 @@ module.exports = {
                 ],
                 exclude:/node_modules/
             },
-            // {
-            //     //匹配html结尾的文件
-            //     test:/\.html$/,
-            //     use:[
-            //         {
-            //             //将分离的html命名
-            //             loader:"file-loader",
-            //             options:{
-            //                 name:"[name].html"
-            //             }
-            //         },
-            //         {
-            //             //将引入的html文件与bundle文件进行分割
-            //             loader:"extract-loader"
-            //         },
-            //         {
-            //             //可对标签属性的处理等
-            //             loader:"html-loader",
-            //             options:{
-            //                 attrs:["img:src"]
-            //             }
-            //         }
-            //     ]
-            // },
+            {
+                //匹配html结尾的文件
+                test:/\.html$/,
+                use:[
+                    
+                    // {
+                    //     //将分离的html命名
+                    //     loader:"file-loader",
+                    //     options:{
+                    //         name:"[name].html"
+                    //     }
+                    // },
+                    // {
+                    //     //将引入的html文件与bundle文件进行分割
+                    //     loader:"extract-loader"
+                    // },
+                    {
+                        //可对标签属性的处理等
+                        loader:"html-loader",
+                        options:{
+                            attrs:["img:src","link:href"],
+                        }
+                    },
+                    // {
+                    //     //处理html中的图片
+                    //     loader:"html-withimg-loader"
+                    // },
+                ]
+            },
             {
                 //匹配图片
                 test:/\.(jpg|jpeg|png|gif)$/,
                 use:[
+                    // {
+                    //     loader:"file-loader",
+                    //     options:{
+                    //         name:"static/[name].[ext]"
+                    //     }
+                    // }
+                    {
+                        //文件大小（单位 byte）低于指定的限制时，可以返回一个 DataURL(base64)
+                        loader:"url-loader",
+                        options:{
+                            //200k
+                            limit:200*1024,
+                            outputPath:"static/images/"
+                        }
+                    }
+                ]
+            },
+            {
+                test:/\.ico$/,
+                use:[
                     {
                         loader:"file-loader",
-                        options:{
-                            name:"static/[name].[ext]"
-                        }
                     }
                 ]
             }
@@ -155,6 +179,10 @@ module.exports = {
     },
     //插件
     plugins:[
+        //打包进度
+        new webpack.ProgressPlugin(),
+        //打包前清空
+        new cleanWebpackPlugin(),
         //生成index.html文件
         new htmlWebpackPlugin({
             template:"./src/index.html",
