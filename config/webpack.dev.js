@@ -5,6 +5,7 @@ const miniCssExtractPlugin = require("mini-css-extract-plugin"); //抽离成css
 const optimizeCss = require("optimize-css-assets-webpack-plugin") //压缩css
 const uglifyJsPlugin = require("uglifyjs-webpack-plugin"); //压缩js
 const cleanWebpackPlugin = require("clean-webpack-plugin"); //用于删除/清除构建文件夹（Node v6+,Webpack v2+)
+const copyWebpackPlugin = require("copy-webpack-plugin"); //用于将单个文件或整个目录复制到构建目录。
 
 module.exports = {
     //优化
@@ -37,6 +38,17 @@ module.exports = {
      * cheap-module-eval-source-map 不会产生文件，集成打包后的文件，不会产生列
      */
     devtool:"source-map",
+    //是否开启监听
+    watch:true,
+    //监听并打包
+    watchOptions: {
+        //重新构建前增加延迟
+        aggregateTimeout: 500,
+        //指定毫秒为单位进行轮询
+        poll: 1000,
+        //不监听
+        ignored: /node_modules/
+    },
     //输出
     output:{
         //生成文件名
@@ -198,7 +210,13 @@ module.exports = {
         //抽离css
         new miniCssExtractPlugin({
             filename:"static/css/main.css"
-        })
+        }),
+        //将单个文件或整个目录复制到构建目录。
+        new copyWebpackPlugin([
+            { from:"./other", to:"./other" }
+        ]),
+        //为每个chunk文件头部添加 banner。
+        new webpack.BannerPlugin("make 2019 by hym")
     ],
     //启动本地服务webapck-dev-server
     devServer:{
@@ -213,6 +231,15 @@ module.exports = {
         //自动打开浏览器 
         open:true,
         //压缩
-        // compress:true
+        // compress:true,
+        //代理
+        proxy:{
+            '/api':{
+                target:"http://localhost:3000",
+                pathRewrite:{
+                    '^/api':''
+                }
+            }
+        }
     }
 }
