@@ -7,7 +7,7 @@ const copyWebpackPlugin = require("copy-webpack-plugin"); //用于将单个文�
 let base = require("../config/webpack.base.js")
 
 let time = new Date();
-let currentDate = time.getFullYear()+'-'+time.getMonth()+'-'+time.getDate();
+let currentDate = time.getFullYear()+'-'+(parseInt(time.getMonth())+1)+'-'+time.getDate();
 
 module.exports = smart(base,{
     //优化
@@ -51,7 +51,7 @@ module.exports = smart(base,{
         new copyWebpackPlugin([
             { from:"./other", to:"./other" }
         ]),
-        //为每个chunk文件头部添加 banner。
+        //为每个chunk文件头部添加 banner
         new webpack.BannerPlugin("make "+currentDate+" by hym")
     ]
 })

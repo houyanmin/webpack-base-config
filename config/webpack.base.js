@@ -10,7 +10,11 @@ module.exports = {
     },
     resolve:{
         //自动解析确定的扩展。默认值为：
-        extensions: [".js",".jsx",".json"]
+        extensions: [".js",".jsx",".json"],
+        //别名
+        alias:{
+            _SRC_: path.resolve(__dirname, '../src'),
+        }
     },
     //输出
     output:{
@@ -37,7 +41,13 @@ module.exports = {
                     miniCssExtractPlugin.loader,
                     {
                         //为css语法应用，例如css中import
-                        loader:"css-loader"
+                        loader:"css-loader",
+                        options:{
+                            // 查询参数 modules 会启用 CSS 模块规范。
+                            modules: true,
+                            // 生成名
+                            localIdentName: '[path][name][local][hash:base64:5]'
+                        }
                     },
                     //自动添加css3前缀
                     {
@@ -57,7 +67,13 @@ module.exports = {
                     miniCssExtractPlugin.loader,
                     {
                         //为css语法应用，例如css中import
-                        loader:"css-loader"
+                        loader:"css-loader",
+                        options:{
+                            // 查询参数 modules 会启用 CSS 模块规范。
+                            modules: true,
+                            // 生成名
+                            localIdentName: '[path][name]-[local]-[hash:base64:5]'
+                        }
                     },
                     {
                         loader:"less-loader"

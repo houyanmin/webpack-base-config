@@ -21,7 +21,7 @@ module.exports = smart(base,{
         //指向目录
         contentBase:"dist",
         //覆盖
-        // overlay:true,
+        overlay:true,
         //热更新
         hot:true,
         //自动打开浏览器 
