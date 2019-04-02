@@ -16,7 +16,7 @@ import logo from "./static/Webpack.png";
 // xhr.send();
 
 
-render(<h1>webpack-base-pro</h1>,document.getElementById('root'))
+render(<h1 className={ style.active }>webpack-base-pro</h1>,document.getElementById('root'))
 
 
 // tree shaking 树摇晃
@@ -27,7 +27,7 @@ render(<h1>webpack-base-pro</h1>,document.getElementById('root'))
 // let a = 1;
 // let b = 2;
 // let c = a+b;
-// console.log(c,"CCC")
+// console.log(arithmetic)
 
 
 //懒加载
