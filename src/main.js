@@ -16,8 +16,7 @@ import logo from "./static/Webpack.png";
 // xhr.send();
 
 
-render(<h1 className={ style.active }>webpack-base-pro</h1>,document.getElementById('root'))
-
+render(<h1 className={ style.active }>webpack-base-pro</h1>,document.getElementById('root'));
 
 // tree shaking 树摇晃
 // import arithmetic from "_SRC_/components/arithmetic.js";
