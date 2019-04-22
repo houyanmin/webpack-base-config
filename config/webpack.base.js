@@ -1,7 +1,6 @@
 const webpack = require("webpack");
 const path = require("path"); //node中path模块
 const htmlWebpackPlugin = require("html-webpack-plugin"); //生成模板文件插件
-const miniCssExtractPlugin = require("mini-css-extract-plugin"); //抽离成css
 
 module.exports = {
     //入口文件
@@ -29,61 +28,6 @@ module.exports = {
     module:{
         //匹配文件，使用对应的(装载器)loader
         rules:[
-            {   
-                //匹配css结尾的文件
-                test:/\.css$/,
-                //注意：顺序自下向上调用
-                use:[
-                    // {
-                    //     //抽离成style
-                    //     loader:"style-loader"
-                    // },
-                    miniCssExtractPlugin.loader,
-                    {
-                        //为css语法应用，例如css中import
-                        loader:"css-loader",
-                        options:{
-                            // 查询参数 modules 会启用 CSS 模块规范。
-                            modules: true,
-                            // 生成名
-                            localIdentName: '[path][name][local][hash:base64:5]'
-                        }
-                    },
-                    //自动添加css3前缀
-                    {
-                        loader:"postcss-loader"
-                    },
-                ]
-            },
-            {   
-                //匹配css结尾的文件
-                test:/\.less$/,
-                //注意：顺序自下向上调用
-                use:[
-                    // {
-                    //     //抽离成style
-                    //     loader:"style-loader"
-                    // },
-                    miniCssExtractPlugin.loader,
-                    {
-                        //为css语法应用，例如css中import
-                        loader:"css-loader",
-                        options:{
-                            // 查询参数 modules 会启用 CSS 模块规范。
-                            modules: true,
-                            // 生成名
-                            localIdentName: '[path][name]-[local]-[hash:base64:5]'
-                        }
-                    },
-                    {
-                        loader:"less-loader"
-                    },
-                    //自动添加css3前缀
-                    {
-                        loader:"postcss-loader"
-                    }
-                ]
-            },
             {
                 //匹配js结尾的文件
                 test:/\.(js|jsx)$/,
@@ -91,23 +35,26 @@ module.exports = {
                     {
                         //es6转es5等
                         loader:"babel-loader",
-                        options: {
-                            // 预设规则
-                            presets: [
-                              '@babel/preset-env',
-                              '@babel/preset-react',
-                            ],
-                            // 不采用.babelrc的配置
-                            babelrc: false,
-                            plugins: [
-                                "dynamic-import-webpack",
-                                ['@babel/plugin-proposal-decorators',{"legacy":true}],
-                                "@babel/plugin-proposal-class-properties",
-                                "@babel/plugin-proposal-export-default-from",
-                                "@babel/plugin-transform-runtime",
-                            ]
-                        },
+                        // options: {
+                        //     // 预设规则
+                        //     presets: [
+                        //       '@babel/preset-env',
+                        //       '@babel/preset-react',
+                        //     ],
+                        //     // 不采用.babelrc的配置
+                        //     babelrc: false,
+                        //     plugins: [
+                        //         "dynamic-import-webpack",
+                        //         ['@babel/plugin-proposal-decorators',{"legacy":true}],
+                        //         "@babel/plugin-proposal-class-properties",
+                        //         "@babel/plugin-proposal-export-default-from",
+                        //         "@babel/plugin-transform-runtime",
+                        //     ]
+                        // },
                         
+                    },
+                    {
+                        loader:"eslint-loader"
                     }
                 ],
                 exclude:/node_modules/
@@ -164,7 +111,7 @@ module.exports = {
                 ]
             },
             {
-                test:/\.ico$/,
+                test:/\.(ico|eot|ttf|svg|woff)$/,
                 use:[
                     {
                         loader:"file-loader",
@@ -193,9 +140,5 @@ module.exports = {
                 hash:true
             }
         }),
-        //抽离css
-        new miniCssExtractPlugin({
-            filename:"static/css/main.css"
-        })
     ]
 }
