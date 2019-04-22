@@ -35,22 +35,22 @@ module.exports = {
                     {
                         //es6转es5等
                         loader:"babel-loader",
-                        options: {
-                            // 预设规则
-                            presets: [
-                              '@babel/preset-env',
-                              '@babel/preset-react',
-                            ],
-                            // 不采用.babelrc的配置
-                            babelrc: false,
-                            plugins: [
-                                "dynamic-import-webpack",
-                                ['@babel/plugin-proposal-decorators',{"legacy":true}],
-                                "@babel/plugin-proposal-class-properties",
-                                "@babel/plugin-proposal-export-default-from",
-                                "@babel/plugin-transform-runtime",
-                            ]
-                        },
+                        // options: {
+                        //     // 预设规则
+                        //     presets: [
+                        //       '@babel/preset-env',
+                        //       '@babel/preset-react',
+                        //     ],
+                        //     // 不采用.babelrc的配置
+                        //     babelrc: false,
+                        //     plugins: [
+                        //         "dynamic-import-webpack",
+                        //         ['@babel/plugin-proposal-decorators',{"legacy":true}],
+                        //         "@babel/plugin-proposal-class-properties",
+                        //         "@babel/plugin-proposal-export-default-from",
+                        //         "@babel/plugin-transform-runtime",
+                        //     ]
+                        // },
                         
                     },
                     {

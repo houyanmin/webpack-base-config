@@ -4,12 +4,15 @@ let base = require("../config/webpack.base.js")
 const modeText = "development";
 
 module.exports = smart(base,{
+    optimization: { //在开发环境中加，生产环境不加
+		usedExports: true
+	},
     //模式 development(开发) & production(生产)
     mode:modeText,
     /**
-     * 源码映射 开发建议（eval-source-map），生产建议（省略）
+     * 源码映射 开发建议（cheap-module-eval-source-map,仅限行），生产建议（省略）
      */
-    devtool:"eval-source-map",
+    devtool:"cheap-module-eval-source-map",
     //配置相对应的loader
     module:{
         //匹配文件，使用对应的(装载器)loader

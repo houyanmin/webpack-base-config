@@ -18,6 +18,18 @@ import logo from "./static/Webpack.png";
 
 render(<h1 className={ style.active }>webpack-base-pro</h1>,document.getElementById('root'));
 
+// 热更新
+if (module.hot) {
+    console.log(123);
+    // module.hot.accept('./App', () => {
+    //   const NextApp = require('./App').default
+    //   ReactDOM.render(
+    //     <h1 className={ style.active }>webpack-base-pro</h1>,
+    //     document.getElementById('app')
+    //   )
+    // })
+  }
+
 // tree shaking 树摇晃
 // import arithmetic from "_SRC_/components/arithmetic.js";
 // let arithmetic = require("./components/arithmetic.js");
